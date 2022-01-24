@@ -1,7 +1,5 @@
 # Autosplitters
-Autosplitters written by SabulineHorizon
+The .asl files listed here are autosplitters that were created to be used with [Livesplit](https://livesplit.org/) and were written by [SabulineHorizon](https://github.com/SabulineHorizon)<br>
 
-The autosplitters here are created to be used with Livesplit
-
-Gazillionaire.asl is an autosplitter intended to be used with the Steam edition of the game Gazillionaire.
-WrathAeonOfRuin.asl is an autosplitter intended to be used with the Steam edition of the game. The game version it was created for is the January 12 2021 Release.
+- *Gazillionaire.asl* was written for the Steam edition of the game [Gazillionaire](https://store.steampowered.com/app/1169100/Gazillionaire/).<br>
+- *WrathAeonOfRuin.asl* was written for the Steam edition of the game [Wrath: Aeon of Ruin](https://store.steampowered.com/app/1000410/WRATH_Aeon_of_Ruin/), January 12 2021 version.<br>
