@@ -18,7 +18,7 @@ state("wrath")
 	int level: 0x6CD3CC;			//16-Mourningvale, 1-Undercrofts, 2-Mire, 3-Hollow, 4-Gardens, 5-Priory
 	int weapons: 0x52456C;			//512-None, 544-Blade, 575-All
 	float relics: 0x524678;			//1-Undercrofts, 2-Mire, 4-Hollow, 8-Gardens, 16-Priory, 31-All
-	
+
 	//Mourningvale hub stones. These are activated after collecting each of the corresponding relics
 	byte undercroftsStone: 0x12ECADC8, 0x38;
 	byte mireStone: 0x12ECADE0, 0x38;
@@ -35,7 +35,7 @@ state("wrath-sdl")
 	int level: 0x3F6A90;
 	int weapons: 0x52446C;
 	float relics: 0x524578;
-	
+
 	//Mourningvale hub stones
 	byte undercroftsStone: 0x12ECACC8, 0x38;
 	byte mireStone: 0x12ECACE0, 0x38;
@@ -58,7 +58,7 @@ startup
 		settings.SetToolTip("longTimer", "Loading saves can cause an extra split. This fixes that bug, but can also cause a split to fail if a menu was open too recently before entering a portal");
 	settings.Add("relicSplits", true, "Split at Relics");
 	settings.SetToolTip("relicSplits", "Split when a relic is collected");
-		settings.Add("ignoreRelicDuplicates", true, "Ignore Duplicate Relics", "relicSplits"); 
+		settings.Add("ignoreRelicDuplicates", true, "Ignore Duplicate Relics", "relicSplits");
 		settings.SetToolTip("ignoreRelicDuplicates", "Does not split on collecting a relic if that relic has already triggered a split. This avoids extra splits that can happen after reloads");
 	settings.Add("exitSplits", false, "Split at Level Ends");
 	settings.SetToolTip("exitSplits", "Split when exiting a level for the first time after collecting its relic");
@@ -81,17 +81,17 @@ startup
 }
 
 start
-{	
+{
 	vars.loadingBackupFlag = 0;
 	bool[] relicsArray = new bool[6] { false, false, false, false, false, false};
-	
+
 	return(
 		//Start if weaponless in Mourningvale
 		((current.level == 16) &&
 		(current.weapons == 512) &&
 		(current.loading == 10) &&
-		(old.loading == 0)) |
-		
+		(old.loading == 0)) ||
+
 		//Start timer after every load screen if it isn't already running
 		(settings["startAfterLoads"] &&
 		old.loading == 0 &&
@@ -106,17 +106,17 @@ reset
 		(current.level == 16) &&
 		(current.weapons == 512) &&
 		(current.weapons != old.weapons)
-	); 
+	);
 }
 
 update{
-	if (settings["enterSplits"] | settings["exitSplits"])
+	if (settings["enterSplits"] || settings["exitSplits"])
 	{
 		//Set a rough timer to the menus to assist with stopping reloads from being triggered as start/end levels
 		//There's probably a better way to handle this since it can cause bugs, but it's unlikely to be an issue, so I'm leaving it as is
-		if (current.deathMenu == 1 | current.menu == 0)
+		if (current.deathMenu == 1 || current.menu == 0)
 		{
-			if (settings["longTimer"] | settings["longTimer2"])
+			if (settings["longTimer"] || settings["longTimer2"])
 				vars.frameTimer = 200;
 			else
 				vars.frameTimer = 50;
@@ -134,7 +134,7 @@ update{
 split
 {
 	vars.relicCollected = false;
-	if ((current.relics > old.relics) && ((current.loading == 10) | (vars.loadingBackupFlag == 1)) && (current.level <= 5))
+	if ((current.relics > old.relics) && ((current.loading == 10) || (vars.loadingBackupFlag == 1)) && (current.level <= 5))
 	{
 		//if relic hasn't been collected at all this run, flag for split
 		if (vars.relicsArray[current.level] == false)
@@ -143,7 +143,7 @@ split
 			vars.relicsArray[current.level] = true;
 		}
 	}
-	
+
 	//if current.loading is working, continue as normal
 	if (current.loading == 10)
 	{
@@ -160,11 +160,11 @@ split
 		if (vars.loadingBackupFlag == 0)
 		{
 			vars.loadingBackupFlag = 1;
-			
+
 			//If loading just now started, prepare to split
 			if (current.loadingBackup == 1)
 			{
-				vars.loadingBackupFlag = 2; 
+				vars.loadingBackupFlag = 2;
 			}
 		}
 		//if current.loading is still broken
@@ -179,51 +179,51 @@ split
 		//if loadingBackupFlag already caused a split last update, end search for a new split
 		else if (vars.loadingBackupFlag == 2)
 		{
-			
+
 			vars.loadingBackupFlag = 3;
 		}
 		//else if (vars.loadingBackupFlag == 3)
 		//	no need to do anything in this case
 	}
-	
+
 	return (
 		//Split when relic stone is activated...
 		(settings["stoneSplits"] &&
 		(current.level == 16) &&
-		((old.undercroftsStone == 38 && current.undercroftsStone == 39) |
-		(old.mireStone == 38 && current.mireStone == 39) |
-		(old.hollowStone == 38 && current.hollowStone == 39) |
-		(old.gardensStone == 38 && current.gardensStone == 39) |
+		((old.undercroftsStone == 38 && current.undercroftsStone == 39) ||
+		(old.mireStone == 38 && current.mireStone == 39) ||
+		(old.hollowStone == 38 && current.hollowStone == 39) ||
+		(old.gardensStone == 38 && current.gardensStone == 39) ||
 		(old.prioryStone == 38 && current.prioryStone == 39)) &&
-		
+
 		//...but if finalStoneSplit is set, don't split unless it's the final relic
-		(!settings["finalStoneSplit"] |
-			((current.undercroftsStone 
-			+ current.mireStone 
-			+ current.hollowStone 
-			+ current.gardensStone 
+		(!settings["finalStoneSplit"] ||
+			((current.undercroftsStone
+			+ current.mireStone
+			+ current.hollowStone
+			+ current.gardensStone
 			+ current.prioryStone)
 			== 195)
-		)) |
-		
+		)) ||
+
 		//Split when entering a portal to go from the hub into a level (loading start)
-		((settings["enterSplits"]) && (old.level == 16) && (((old.loading == 10) && (current.loading == 0)) | (vars.loadingBackupFlag == 2)) && !vars.menuFlag) |
-		
+		((settings["enterSplits"]) && (old.level == 16) && (((old.loading == 10) && (current.loading == 0)) || (vars.loadingBackupFlag == 2)) && !vars.menuFlag) ||
+
 		//Split after every loading screen
-		((settings["splitAfterLoading"]) && ((old.loading == 0) && (current.loading == 10))) |
+		((settings["splitAfterLoading"]) && ((old.loading == 0) && (current.loading == 10))) ||
 
 		//Split when a relic is collected
-		((settings["relicSplits"]) && (current.relics > old.relics) && ((current.loading == 10) | (vars.loadingBackupFlag == 1)) && (!settings["ignoreRelicDuplicates"] | vars.relicCollected)) |
+		((settings["relicSplits"]) && (current.relics > old.relics) && ((current.loading == 10) || (vars.loadingBackupFlag == 1)) && (!settings["ignoreRelicDuplicates"] || vars.relicCollected)) ||
 
 		//Split when entering a portal to go from a level back to the hub (loading start)
-		((settings["exitSplits"]) && (old.level != 16) && (((old.loading == 10) && (current.loading == 0)) | (vars.loadingBackupFlag == 2)) && !vars.menuFlag)
+		((settings["exitSplits"]) && (old.level != 16) && (((old.loading == 10) && (current.loading == 0)) || (vars.loadingBackupFlag == 2)) && !vars.menuFlag)
 	);
 }
 
 isLoading{
 	return(
-		(current.loading == 0) |
-		(settings["pauseInHub"] && current.level == 16) |
+		(current.loading == 0) ||
+		(settings["pauseInHub"] && current.level == 16) ||
 		(settings["pauseMenu"] && current.menu == 0)
 	);
 }
