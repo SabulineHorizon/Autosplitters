@@ -114,7 +114,7 @@ split{
 		if(vars.splitFlag > 0)
 		{
 			//if a victory/split screen is open
-			if ((current.currentScene == 30 && settings["wreeee"]) | (current.currentScene == 14 && !settings["wreeee"]))
+			if ((current.currentScene == 30 && settings["wreeee"]) || (current.currentScene == 14 && !settings["wreeee"]))
 			{
 				vars.splitFlag--;
 				return true;
@@ -155,7 +155,7 @@ split{
 		if(vars.splitFlag > 0)
 		{
 			//if a victory screen is open
-			if ((current.currentScene == 30 && settings["wreeee"]) | (current.currentScene == 14 && !settings["wreeee"]) | settings["splitDuringWeek"] && (!settings["wreeee"] | current.currentScene == 30))
+			if ((current.currentScene == 30 && settings["wreeee"]) || (current.currentScene == 14 && !settings["wreeee"]) || settings["splitDuringWeek"] && (!settings["wreeee"] || current.currentScene == 30))
 			{
 				vars.splitFlag--;
 				return true;
