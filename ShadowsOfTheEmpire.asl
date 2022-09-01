@@ -7,6 +7,8 @@ state("Shadows"){
 	int selected	: "Shadows.exe", 0x0CAD64;	// 0-9 currently selected level from menu screen
 	bool loading	: "Shadows.exe", 0x2EEB59;	// 0 - not loading, 1 - loading //might have slight delays in updating, not sure
 	float levelEnd	: "Shadows.exe", 0x0CAF4C;	// Changes from 0.0 to 9.5ish at the end-level screen, and then decreases until 2.5
+	int reactorHP	: "Shadows.exe", 0x3B5364;	// Starts at 4, destroyed at 0
+	byte shipActive : "Shadows.exe", 0x4D4F1A;	// 24 when piloting controls are active, 0 when the game takes control
 }
 
 startup{
@@ -42,9 +44,13 @@ reset{
 
 split{
 	return(
-		old.levelEnd == 0.0 &&		// level has ended
+		(old.levelEnd == 0.0 &&		// level has ended
 		current.levelEnd < 9.6 &&	// level-end screen has initialized
-		current.levelEnd > 9.4		// and is in the expected value range
+		current.levelEnd > 9.4)		// and is in the expected value range
+		||				// OR
+		(current.level == 9 &&		// last level
+		current.reactorHP == 0 &&	// reactor has been destroyed
+		current.shipActive == 0)	// in-game cutscene is playing
 	);
 }
 
