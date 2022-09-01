@@ -48,7 +48,8 @@ split{
 		current.levelEnd < 9.6 &&	// level-end screen has initialized
 		current.levelEnd > 9.4)		// and is in the expected value range
 		||				// OR
-		(current.level == 9 &&		// last level
+		(current.selected == 9 &&	// final level selected
+		current.level == 9 &&		// final level active
 		current.reactorHP == 0 &&	// reactor has been destroyed
 		current.shipActive == 0)	// in-game cutscene is playing
 	);
