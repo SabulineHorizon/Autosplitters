@@ -3,10 +3,10 @@
 //Sept 27 2022 - Version 1.0
 
 state("Aqua"){
-	int cutscene		: "binkw32.dll", 0x5E064;		// Cutscene is active when this is greater than 0
-	byte loading		: 0x10DBC0, 0x1D8;				// 43 - loading
-	byte activeStation	: 0x292F5C, 0x8, 0x28;			// Shows station number after station becomes active
-	byte nextStation	: 0x263258, 0x1C, 0x28;			// Shows station number both during loading and while station is active
+	int cutscene		: "binkw32.dll", 0x5E064;	// Cutscene is active when this is greater than 0
+	byte loading		: 0x10DBC0, 0x1D8;		// 43 - loading
+	byte activeStation	: 0x292F5C, 0x8, 0x28;		// Shows station number after station becomes active
+	byte nextStation	: 0x263258, 0x1C, 0x28;		// Shows station number both during loading and while station is active
 	string64 mapPath	: 0x2676C0, 0x7C, 0x40, 0x60;	// Resource path of current level
 	string32 menu1		: 0x26323C, 0xA0, 0x2F4, 0x0;	// Menu selection 1 - "Dipol Auto Activate: 0"
 	string32 menu2		: 0x26323C, 0xA0, 0x340, 0x0;	// Menu selection 2 - "Activate Dipol"
@@ -35,14 +35,14 @@ start{
 
 split{
 	return (
-		(old.menu1 == "Dipol Auto Activate: 0" &&		// Automatic timer splits - level-end countdown finished
-		current.menu1 != old.menu1 &&					// Automatic timer splits - only split once 
+		(old.menu1 == "Dipol Auto Activate: 0" &&	// Automatic timer splits - level-end countdown finished
+		current.menu1 != old.menu1 &&			// Automatic timer splits - only split once 
 		current.mapPath != "map\\6h4\\script\\6h4") ||	// Automatic timer splits - avoid double split at the end of run
-		(old.menu2 == "Activate Dipol" &&				// Manual splits - "Activate Dipol" is most recent selection
-		current.menu2 == null) || 						// Manual splits - menu2 changed to null because loading started
+		(old.menu2 == "Activate Dipol" &&		// Manual splits - "Activate Dipol" is most recent selection
+		current.menu2 == null) || 			// Manual splits - menu2 changed to null because loading started
 		(current.menu1 == "Dipol Auto Activate: 20" &&	// End split - level-end countdown started
-		current.menu1 != old.menu1 &&					// End split - only split once
-		current.mapPath == "map\\6h4\\script\\6h4")		// End split - while on final level
+		current.menu1 != old.menu1 &&			// End split - only split once
+		current.mapPath == "map\\6h4\\script\\6h4")	// End split - while on final level
 	);
 }
 
