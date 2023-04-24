@@ -20,20 +20,20 @@ startup
 	settings.Add("splitOnTravel", true, "Split On Travel");
 	settings.SetToolTip("splitOnTravel", "Split when travel screen appears if conditions are met");
 	
-		settings.Add("travelPrison", true, "Leaving Prison", "splitOnTravel");
-		settings.SetToolTip("travelPrison", "Split when traveling away from the Imperial Dungeons");
-	
-		settings.Add("travelToDungeonStaff", true, "To Dungeon For Staff Piece", "splitOnTravel");
-		settings.SetToolTip("travelToDungeonStaff", "Split when traveling to a dungeon for a staff piece");
-	
-		settings.Add("travelFromDungeonStaff", true, "From Dungeon After Staff Piece", "splitOnTravel");
-		settings.SetToolTip("travelFromDungeonStaff", "Split when traveling away from a dungeon after collecting a staff piece");
+		settings.Add("travelPrison", true, "After Prison", "splitOnTravel");
+		settings.SetToolTip("travelPrison", "Split when traveling away after the Imperial Dungeons");
 	
 		settings.Add("travelToDungeonFetch", true, "To Dungeon For Fetch Quest", "splitOnTravel");
 		settings.SetToolTip("travelToDungeonFetch", "Split when traveling to a dungeon for a fetch quest item");
 	
 		settings.Add("travelFromDungeonFetch", true, "From Dungeon After Fetch Quest", "splitOnTravel");
 		settings.SetToolTip("travelFromDungeonFetch", "Split when traveling away from a dungeon after collecting a fetch quest item");
+	
+		settings.Add("travelToDungeonStaff", false, "To Dungeon For Staff Piece", "splitOnTravel");
+		settings.SetToolTip("travelToDungeonStaff", "Split when traveling to a dungeon for a staff piece");
+	
+		settings.Add("travelFromDungeonStaff", true, "From Dungeon After Staff Piece", "splitOnTravel");
+		settings.SetToolTip("travelFromDungeonStaff", "Split when traveling away from a dungeon after collecting a staff piece");
 	
 	//Split on dreams
 	settings.Add("splitOnDream", false, "Split On Dreams");
