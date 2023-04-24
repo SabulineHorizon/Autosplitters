@@ -36,7 +36,7 @@ startup
 		settings.SetToolTip("travelFromDungeonFetch", "Split when traveling away from a dungeon after collecting a fetch quest item");
 	
 	//Split on dreams
-	settings.Add("splitOnDream", true, "Split On Dreams");
+	settings.Add("splitOnDream", false, "Split On Dreams");
 	settings.SetToolTip("splitOnDream", "Split when dreams appear if conditions are met");
 	
 		settings.Add("dreamCreation", true, "After Character Creation", "splitOnDream");
@@ -49,7 +49,7 @@ startup
 		settings.SetToolTip("dreamStaff", "Split on dream after collecting a staff piece");
 		
 	//Split on quest items
-	settings.Add("splitOnQuestItem", true, "Split On Quest Items");
+	settings.Add("splitOnQuestItem", false, "Split On Quest Items");
 	settings.SetToolTip("splitOnQuestItem", "Split when quest items are collected");
 	
 		settings.Add("questItemStaff", true, "Staff Pieces", "splitOnQuestItem");
@@ -62,10 +62,10 @@ startup
 	settings.Add("additionalSplits", true, "Additional Splits");
 	settings.SetToolTip("additionalSplits", "Additional optional splits");
 	
-		settings.Add("characterCreation", true, "Character Creation Split", "additionalSplits");
+		settings.Add("characterCreation", false, "Character Creation Split", "additionalSplits");
 		settings.SetToolTip("characterCreation", "Split when the Imperial Dungeons start, after character creation");
 	
-		settings.Add("leavingPrison", true, "Leaving Prison", "additionalSplits");
+		settings.Add("leavingPrison", false, "Leaving Prison", "additionalSplits");
 		settings.SetToolTip("leavingPrison", "Split when leaving the Imperial Dungeons");
 		
 		settings.Add("spamFinalSplit", true, "Spam Final Split", "additionalSplits");
