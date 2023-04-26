@@ -81,6 +81,7 @@ init
 	vars.travelFlag = false;			// used to check if travel is allowed to trigger splits
 	vars.travelToQuestFlag = false;			// used to check if travel to a quest location is allowed to trigger splits
 	vars.dreamsFlag = false;			// used to check if dreams are allowed to trigger splits
+	vars.dreamTwoFlag = false;			// used to keep the second dream from splitting twice, turns true once activated
 	vars.questItemFlag = false;				// used to check if a quest item has been collected
 	vars.questLocationSelected = false;		// used to check if travel target is a quest location
 	vars.sleepOrTravelFlag = false;			// used to avoid travel false positives when sleeping
@@ -126,6 +127,7 @@ onStart
 	vars.travelFlag = false;
 	vars.travelToQuestFlag = false;
 	vars.dreamsFlag = false;
+	vars.dreamTwoFlag = false;
 	vars.questItemFlag = false;
 	vars.questLocationSelected = false;
 	vars.sleepOrTravelFlag = false;
@@ -152,7 +154,7 @@ update
 		if(vars.gameStartedFlag) //check if prison loaded
 		{
 			if(settings["travelPrison"]) vars.travelFlag = true;
-			if(settings["dreamTwo"]) vars.dreamsFlag = true;
+			if(settings["dreamTwo"] && !vars.dreamTwoFlag){vars.dreamsFlag = true; vars.dreamTwoFlag = true;}
 			if(!settings["leavingPrison"]) vars.prisonEndFlag = false;
 		}
 	}
@@ -272,6 +274,7 @@ onReset
 	vars.travelFlag = false;
 	vars.travelToQuestFlag = false;
 	vars.dreamsFlag = false;
+	vars.dreamTwoFlag = false;
 	vars.questItemFlag = false;
 	vars.questLocationSelected = false;
 	vars.sleepOrTravelFlag = false;
