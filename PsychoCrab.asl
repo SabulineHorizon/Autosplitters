@@ -1,6 +1,6 @@
 // Psycho Crab Autosplitter Version 1.0 Sept 16, 2023
 // Written by SabulineHorizon
-// Using the asl-help component written by Ero
+// Using the asl-help component written by Ero - https://github.com/just-ero/asl-help/raw/main/lib/asl-help
 
 state("Psycho Crab"){}
 
