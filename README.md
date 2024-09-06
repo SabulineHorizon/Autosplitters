@@ -7,3 +7,4 @@ The .asl files listed here are autosplitters that were created to be used with [
 - *Aquanox.asl* was written for the Steam edition of the game [Aquanox](https://store.steampowered.com/app/39630/AquaNox/).<br>
 - *TESArena.asl* was written for Version 1.07 of the game [The Elder Scrolls: Arena](https://en.uesp.net/wiki/Arena:Files).<br>
 - *PsychoCrab.asl* was written for the Steam edition of the game [Psycho Crab](https://store.steampowered.com/app/1923650/Psycho_Crab/).<br>
+- *Doom2016.asl* was written for the Steam edition of the 2016 game [Doom](https://store.steampowered.com/app/379720/DOOM/). Previous versions of this asl can be found [here](https://github.com/drtchops/asl/blob/master/doom2016.asl)<br>
