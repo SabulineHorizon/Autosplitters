@@ -11,12 +11,12 @@ state("SquirrelGun-Win64-Shipping", "[version]") {
 	double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
 	double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
 	string200 mapFile: 0x76567B0, 0xAF8, 0x0;					//GEngine, FString TransitionDescription
+	int goldNuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x904;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumStars
 	
 	// //Other addresses that might be used later to add more splits, especially for the 100% run
 	// byte pauseLocked: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA48;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, DisablePauseMenu
 	// int nuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x900;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumNuts
-	// int goldNuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x904;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumStars
-	// int ammoUpgrade: 0x0, 0x0;							//need to find address/pointer
+	// int ammoWedge: 0x0, 0x0;							//need to find address/pointer
 	// string100 region: 0x0, 0x0;							//need to find address/pointer
 }
 
@@ -28,6 +28,8 @@ startup {
 		settings.SetToolTip("splitTough", "Split while reloading checkpoint to skip from Mean Streets to Tough Streets for the first time");
 		settings.Add("splitTower", true, "Split when entering Tower", "splits");
 		settings.SetToolTip("splitTower", "Split while loading from Neighborhood into Tower for the first time");
+		settings.Add("splitGoldNuts", false, "Split on Golden Nuts", "splits");
+		settings.SetToolTip("splitGoldNuts", "Split every time a golden nut is collected");
 		
 	settings.Add("spamFinalSplit", true, "Spam Final Split");
 	settings.SetToolTip("spamFinalSplit", "Final split triggers repeatedly to end the timer in case there are too many splits remaining");
@@ -40,6 +42,7 @@ startup {
 	vars.toughSplit = false;
 	vars.towerSplit = false;
 	vars.finalSplitTriggered = false;
+	vars.goldNutCount = 0;
 }
 
 update {
@@ -65,6 +68,7 @@ onStart {
 	vars.toughSplit = false;
 	vars.towerSplit = false;
 	vars.finalSplitTriggered = false;
+	vars.goldNutCount = current.goldNuts;
 }
 
 split {
@@ -96,6 +100,13 @@ split {
 			old.mapFile == "/Game/Maps/Neighborhood"){
 		vars.towerSplit = true;
 		print("Split for entering Tower");
+		return true;
+	}
+	//Split when collecting a golden nut
+	else if(current.goldNuts > vars.goldNutCount && settings["splitGoldNuts"])
+	{
+		vars.goldNutCount = current.goldNuts;
+		print("Split for golden nut");
 		return true;
 	}
 	//split if the final boss reaches 0 health
