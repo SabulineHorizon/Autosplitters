@@ -1,0 +1,138 @@
+//Written by SabulineHorizon
+
+state("SquirrelGun-Win64-Shipping", "[version]") {
+	double bossHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;	//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
+	byte cutsceneActive: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA22;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CinematicActive
+	bool notLoading: 0x762A9D8;		//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
+	double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
+	double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
+	double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
+	double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
+	double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
+  string200 mapFile: 0x76567B0, 0xAF8, 0x0;														//GEngine, FString TransitionDescription
+	
+	// //Other addresses that might be used later to add more splits, especially for the 100% run
+	// byte pauseLocked: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA48;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, DisablePauseMenu
+	// int nuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x900;							//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumNuts
+	// int goldNuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x904;					//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumStars
+	// int ammoUpgrade: 0x0, 0x0;								//need to find address/pointer
+	// string100 region: 0x0, 0x0;							//need to find address/pointer
+}
+
+startup {
+	settings.Add("splits", false, "Optional Splits");
+	settings.Add("splitBunker", true, "Split when leaving Bunker", "splits");
+		settings.SetToolTip("splitBunker", "Split while loading from Bunker into Neighborhood for the first time");
+		settings.Add("splitTough", true, "Split when skipping to Tough Streets", "splits");
+		settings.SetToolTip("splitTough", "Split while reloading checkpoint to skip from Mean Streets to Tough Streets for the first time");
+		settings.Add("splitTower", true, "Split when entering Tower", "splits");
+		settings.SetToolTip("splitTower", "Split while loading from Neighborhood into Tower for the first time");
+		
+	settings.Add("spamFinalSplit", true, "Spam Final Split");
+	settings.SetToolTip("spamFinalSplit", "Final split triggers repeatedly to end the timer in case there are too many splits remaining");
+	
+	settings.Add("experimentalLoads", false, "Experimental Load Remover");
+	settings.SetToolTip("experimentalLoads", "This might not be reliable, it needs more testing to know");
+	
+	//declare variables. These get initialized in onStart{}
+	vars.bunkerSplit = false;
+	vars.toughSplit = false;
+	vars.towerSplit = false;
+	vars.bossFightStarted = false;
+	vars.finalSplitTriggered = false;
+}
+
+update {
+	// //debug output for mapFile
+	// if(current.mapFile != old.mapFile)
+		// print("mapFile changed to: " + current.mapFile.ToString() + " from: " + old.mapFile.ToString());
+	
+	//If boss health has been initialized, set flag to enable the split
+	if(current.mapFile == "/Game/Maps/SingleMapsInGame/Bunker2/Bunker2_Boss" && (current.bossHealth == 1180))
+		vars.bossFightStarted = true;
+	else if(current.mapFile != "/Game/Maps/SingleMapsInGame/Bunker2/Bunker2_Boss")
+		vars.bossFightStarted = false;
+}
+
+start {
+	//Start if a cutscene finished while player is at the bunker start coordinates
+	return(
+		old.cutsceneActive == 1 && current.cutsceneActive == 0 &&
+		current.mapFile == "/Game/Maps/Bunker0" &&
+		(Math.Abs(current.playerX - (199.03)) < 10.0) &&
+		(Math.Abs(current.playerY - (-1.38)) < 10.0) &&
+		(Math.Abs(current.playerZ - (98.39)) < 10.0)
+	);
+}
+
+onStart {
+	//initialize split variables
+	vars.bunkerSplit = false;
+	vars.toughSplit = false;
+	vars.towerSplit = false;
+	vars.bossFightStarted = false;
+	vars.finalSplitTriggered = false;
+}
+
+split {
+	//split if the player moves from Bunker to Neighborhood
+	if(settings["splitBunker"] &&
+			!vars.bunkerSplit &&
+			current.mapFile == "/Game/Maps/Neighborhood" &&
+			old.mapFile == "/Game/Maps/Bunker0"){
+		vars.bunkerSplit = true;
+		print("Split for leaving Bunker");
+		return true;
+	}
+	//split if the player reloads the checkpoint that's used to skip from Mean Streets to Tough Streets
+	else if(settings["splitTough"] &&
+			!vars.toughSplit &&
+			current.mapFile == "/Game/Maps/Neighborhood" &&
+			(Math.Abs(current.checkpointX - (1600.0)) < 1.0) &&
+			(Math.Abs(current.checkpointY - (-3690.0)) < 1.0) &&
+			(Math.Abs(current.playerX - current.checkpointX) < 1.0) &&
+			(Math.Abs(current.playerY - current.checkpointY) < 1.0)){
+		vars.toughSplit = true;
+		print("Split for skipping to Tough Streets");
+		return true;
+	}
+	//split if the player moves from Neighborhood to Tower
+	else if(settings["splitTower"] &&
+			!vars.towerSplit &&
+			current.mapFile == "/Game/Maps/SingleMapsInGame/Bunker2/Bunker2_DroneGauntlet" &&
+			old.mapFile == "/Game/Maps/Neighborhood"){
+		vars.towerSplit = true;
+		print("Split for entering Tower");
+		return true;
+	}
+	//split if the final boss reaches 0 health
+	else if(current.mapFile == "/Game/Maps/SingleMapsInGame/Bunker2/Bunker2_Boss" &&
+			(current.bossHealth == 0 && old.bossHealth > 0) ||
+			(vars.finalSplitTriggered && settings["spamFinalSplit"]))
+	{
+		vars.finalSplitTriggered = true;
+		print("Split for final boss");
+		return true;
+	}
+}
+
+reset {
+	//Reset if player is teleported from initial loading position in Bunker to the first cutscene start position
+	return(
+		current.mapFile == "/Game/Maps/Bunker0" &&
+		(Math.Abs(old.playerX - (199.03)) < 1.0) &&
+		(Math.Abs(old.playerY - (-1.38)) < 1.0) &&
+		(Math.Abs(old.playerZ - (98.39)) < 1.0) &&
+		(Math.Abs(current.playerX - (36.0)) < 1.0) &&
+		(Math.Abs(current.playerY - (-9.47)) < 1.0) &&
+		(Math.Abs(current.playerZ - (633.48)) < 1.0)
+	);
+}
+
+isLoading {
+	//This load address isn't completely reliable, it needs to be replaced with a better one
+	//It flips to 0 for a single update tick every now and then during gameplay
+	//It seems to stay consistent during loading, although it looks like it ends slightly before loading finishes?
+	//The old.notLoading check just adds a one-update buffer to double check before pausing for loads
+	return(!current.notLoading && !old.notLoading && settings["experimentalLoads"]);
+}
