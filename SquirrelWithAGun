@@ -1,21 +1,22 @@
 //Written by SabulineHorizon
 
 state("SquirrelGun-Win64-Shipping", "[version]") {
-	double bossHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;	//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
+	double bossMaxHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x8;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, MaxHealth
+	double bossHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
 	byte cutsceneActive: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA22;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CinematicActive
 	bool notLoading: 0x762A9D8;		//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
 	double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
 	double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
 	double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
-	double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
-	double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
-  string200 mapFile: 0x76567B0, 0xAF8, 0x0;														//GEngine, FString TransitionDescription
+	double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
+	double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
+	string200 mapFile: 0x76567B0, 0xAF8, 0x0;					//GEngine, FString TransitionDescription
 	
 	// //Other addresses that might be used later to add more splits, especially for the 100% run
 	// byte pauseLocked: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA48;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, DisablePauseMenu
-	// int nuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x900;							//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumNuts
-	// int goldNuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x904;					//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumStars
-	// int ammoUpgrade: 0x0, 0x0;								//need to find address/pointer
+	// int nuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x900;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumNuts
+	// int goldNuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x904;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumStars
+	// int ammoUpgrade: 0x0, 0x0;							//need to find address/pointer
 	// string100 region: 0x0, 0x0;							//need to find address/pointer
 }
 
@@ -38,7 +39,6 @@ startup {
 	vars.bunkerSplit = false;
 	vars.toughSplit = false;
 	vars.towerSplit = false;
-	vars.bossFightStarted = false;
 	vars.finalSplitTriggered = false;
 }
 
@@ -46,12 +46,6 @@ update {
 	// //debug output for mapFile
 	// if(current.mapFile != old.mapFile)
 		// print("mapFile changed to: " + current.mapFile.ToString() + " from: " + old.mapFile.ToString());
-	
-	//If boss health has been initialized, set flag to enable the split
-	if(current.mapFile == "/Game/Maps/SingleMapsInGame/Bunker2/Bunker2_Boss" && (current.bossHealth == 1180))
-		vars.bossFightStarted = true;
-	else if(current.mapFile != "/Game/Maps/SingleMapsInGame/Bunker2/Bunker2_Boss")
-		vars.bossFightStarted = false;
 }
 
 start {
@@ -70,7 +64,6 @@ onStart {
 	vars.bunkerSplit = false;
 	vars.toughSplit = false;
 	vars.towerSplit = false;
-	vars.bossFightStarted = false;
 	vars.finalSplitTriggered = false;
 }
 
@@ -107,8 +100,9 @@ split {
 	}
 	//split if the final boss reaches 0 health
 	else if(current.mapFile == "/Game/Maps/SingleMapsInGame/Bunker2/Bunker2_Boss" &&
-			(current.bossHealth == 0 && old.bossHealth > 0) ||
-			(vars.finalSplitTriggered && settings["spamFinalSplit"]))
+			(current.bossMaxHealth == 1180) && //this is to check if health is initialized
+			(current.bossHealth == 0) &&
+			(!vars.finalSplitTriggered || settings["spamFinalSplit"]))
 	{
 		vars.finalSplitTriggered = true;
 		print("Split for final boss");
