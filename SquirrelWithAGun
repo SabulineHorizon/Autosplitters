@@ -103,10 +103,13 @@ split {
 		return true;
 	}
 	//Split when collecting a golden nut
-	else if(current.goldNuts > vars.goldNutCount && settings["splitGoldNuts"])
+	else if(settings["splitGoldNuts"] &&
+			current.goldNuts > vars.goldNutCount &&
+			current.goldNuts < 100 &&
+			current.notLoading)
 	{
 		vars.goldNutCount = current.goldNuts;
-		print("Split for golden nut");
+		print("Split for golden nut. current count: " + current.goldNuts.ToString());
 		return true;
 	}
 	//split if the final boss reaches 0 health
