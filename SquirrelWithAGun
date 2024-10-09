@@ -4,10 +4,10 @@ state("SquirrelGun-Win64-Shipping", "[version]") {
 	double bossMaxHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x8;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, MaxHealth
 	double bossHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
 	byte cutsceneActive: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA22;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CinematicActive
-	bool notLoading: 0x762A9D8;		//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
-	double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
-	double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
-	double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
+	bool notLoading: 0x762A9D8;							//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
+	double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
+	double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
+	double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
 	double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
 	double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
 	string200 mapFile: 0x76567B0, 0xAF8, 0x0;					//GEngine, FString TransitionDescription
@@ -20,11 +20,11 @@ state("SquirrelGun-Win64-Shipping", "[version]") {
 
 startup {
 	settings.Add("splits", false, "Optional Splits");
-	settings.Add("splitBunker", true, "Split when leaving Bunker", "splits");
+	settings.Add("splitBunker", false, "Split when leaving Bunker", "splits");
 		settings.SetToolTip("splitBunker", "Split while loading from Bunker into Neighborhood for the first time");
-		settings.Add("splitTough", true, "Split when skipping to Tough Streets", "splits");
+		settings.Add("splitTough", false, "Split when skipping to Tough Streets", "splits");
 		settings.SetToolTip("splitTough", "Split while reloading checkpoint to skip from Mean Streets to Tough Streets for the first time");
-		settings.Add("splitTower", true, "Split when entering Tower", "splits");
+		settings.Add("splitTower", false, "Split when entering Tower", "splits");
 		settings.SetToolTip("splitTower", "Split while loading from Neighborhood into Tower for the first time");
 		settings.Add("splitGoldNut", false, "Split on Golden Nuts", "splits");
 		settings.SetToolTip("splitGoldNut", "Split when a golden nut is collected for the first time");
@@ -94,7 +94,7 @@ startup {
 			settings.SetToolTip("splitClothing", "Split every time a new Clothing (body) is equipped for the first time");
 			settings.Add("splitFur", true, "Split on Fur", "splitOutfit");
 			settings.SetToolTip("splitFur", "Split every time a new outfit fur is equipped for the first time");
-			settings.Add("splitChipmunk", false, "Split on Chipmunk", "splitOutfit");
+			settings.Add("splitChipmunk", true, "Split on Chipmunk", "splitOutfit");
 			settings.SetToolTip("splitChipmunk", "Split when the Chipmunk fur type is equipped the first time. This is usually the end condition of the 100% run");
 				settings.Add("spamChipmunkSplit", true, "Spam Chipmunk Split", "splitChipmunk");
 				settings.SetToolTip("spamChipmunkSplit", "Chipmunk split triggers repeatedly to end the timer in case there are too many splits remaining");
