@@ -4,18 +4,18 @@ state("SquirrelGun-Win64-Shipping", "[version]") {
 	double bossMaxHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x8;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, MaxHealth
 	double bossHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
 	byte cutsceneActive: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA22;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CinematicActive
-	bool notLoading: 0x762A9D8;							//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
-	double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
-	double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
-	double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
+	bool notLoading: 0x762A9D8;		//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
+	double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
+	double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
+	double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
 	double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
 	double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
 	string200 mapFile: 0x76567B0, 0xAF8, 0x0;					//GEngine, FString TransitionDescription
-	int goldNuts: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x904;				//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, InventorySaveData+NumStars
 	double maxAmmo: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x640, 0xC8, 0x88;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, AC_HealthAndStats, StatsPlus, MaxAmmo
 	byte accessory: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2A;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Accessory
 	byte fur: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2B;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Fur
 	byte clothing: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2C;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Clothing
+	string200 nutName: 0x76567B0, 0x190, 0xE90, 0x1A8, 0x78, 0x508, 0x0;		//GEngine, WorldSettingsClass, ??, ??, ??, Fstring ??
 }
 
 startup {
@@ -26,8 +26,64 @@ startup {
 		settings.SetToolTip("splitTough", "Split while reloading checkpoint to skip from Mean Streets to Tough Streets for the first time");
 		settings.Add("splitTower", true, "Split when entering Tower", "splits");
 		settings.SetToolTip("splitTower", "Split while loading from Neighborhood into Tower for the first time");
-		settings.Add("splitGoldNuts", false, "Split on Golden Nuts", "splits");
-		settings.SetToolTip("splitGoldNuts", "Split every time a golden nut is collected");
+		settings.Add("splitGoldNut", false, "Split on Golden Nuts", "splits");
+		settings.SetToolTip("splitGoldNut", "Split when a golden nut is collected for the first time");
+			settings.Add("Top Secret Acorn", true, "Top Secret Acorn", "splitGoldNut");
+			settings.Add("Hiding Underneath", true, "Hiding Underneath", "splitGoldNut");
+			settings.Add("Scorching Walkway", true, "Scorching Walkway", "splitGoldNut");
+			settings.Add("Polecat... Err... Polesquirrel", true, "Polecat... Err... Polesquirrel", "splitGoldNut");
+			settings.Add("Tippy Top Secret Acorn", true, "Tippy Top Secret Acorn", "splitGoldNut");
+			settings.Add("Brolly Bouncing", true, "Brolly Bouncing", "splitGoldNut");
+			settings.Add("Jogger Stopper", true, "Jogger Stopper", "splitGoldNut");
+			settings.Add("Top Shelf Prize", true, "Top Shelf Prize", "splitGoldNut");
+			settings.Add("Climb And Leap To The Roof", true, "Climb And Leap To The Roof", "splitGoldNut");
+			settings.Add("The Floor Is Lava", true, "The Floor Is Lava", "splitGoldNut");
+			settings.Add("Crawl Space Maze", true, "Crawl Space Maze", "splitGoldNut");
+			settings.Add("Top O' The Yellow House", true, "Top O' The Yellow House", "splitGoldNut");
+			settings.Add("Light The Golden Gas Tank", true, "Light The Golden Gas Tank", "splitGoldNut");
+			settings.Add("Flash Fried Patties", true, "Flash Fried Patties", "splitGoldNut");
+			settings.Add("Chiropractor", true, "Chiropractor", "splitGoldNut");
+			settings.Add("Squirrel On A Hot Tin Roof", true, "Squirrel On A Hot Tin Roof", "splitGoldNut");
+			settings.Add("The Sovereign Citizen", true, "The Sovereign Citizen", "splitGoldNut");
+			settings.Add("In Landmine Guy's House", true, "In Landmine Guy's House", "splitGoldNut");
+			settings.Add("High In The Skate Park", true, "High In The Skate Park", "splitGoldNut");
+			settings.Add("Highest In The Skate Park", true, "Highest In The Skate Park", "splitGoldNut");
+			settings.Add("Gold Agents On The Road", true, "Gold Agents On The Road", "splitGoldNut");
+			settings.Add("Not So Straight-And-Narrow", true, "Not So Straight-And-Narrow", "splitGoldNut");
+			settings.Add("Canopy Crossing", true, "Canopy Crossing", "splitGoldNut");
+			settings.Add("Under Old Management", true, "Under Old Management", "splitGoldNut");
+			settings.Add("Cactupuncture", true, "Cactupuncture", "splitGoldNut");
+			settings.Add("Salooney Goons", true, "Salooney Goons", "splitGoldNut");
+			settings.Add("Stealing From The Till", true, "Stealing From The Till", "splitGoldNut");
+			settings.Add("Party Pole", true, "Party Pole", "splitGoldNut");
+			settings.Add("Certified Greek", true, "Certified Greek", "splitGoldNut");
+			settings.Add("Bachelor Party", true, "Bachelor Party", "splitGoldNut");
+			settings.Add("Pro Basketball", true, "Pro Basketball", "splitGoldNut");
+			settings.Add("Touchdown", true, "Touchdown", "splitGoldNut");
+			settings.Add("Field Goal", true, "Field Goal", "splitGoldNut");
+			settings.Add("Gold Agents In The Waterway", true, "Gold Agents In The Waterway", "splitGoldNut");
+			settings.Add("High-Speed Pneumatic Tube", true, "High-Speed Pneumatic Tube", "splitGoldNut");
+			settings.Add("Water Ski Adventure", true, "Water Ski Adventure", "splitGoldNut");
+			settings.Add("Industrial Drainage Pipeline", true, "Industrial Drainage Pipeline", "splitGoldNut");
+			settings.Add("Tower Reservoir", true, "Tower Reservoir", "splitGoldNut");
+			settings.Add("Gold Agents On The Highway", true, "Gold Agents On The Highway", "splitGoldNut");
+			settings.Add("Truss Me", true, "Truss Me", "splitGoldNut");
+			settings.Add("Sniper Squirrel", true, "Sniper Squirrel", "splitGoldNut");
+			settings.Add("Water Slide Fast Pass", true, "Water Slide Fast Pass", "splitGoldNut");
+			settings.Add("Rocket Jump!", true, "Rocket Jump!", "splitGoldNut");
+			settings.Add("High Above The Bouncy Castle", true, "High Above The Bouncy Castle", "splitGoldNut");
+			settings.Add("Bouncy Rocket Blockers", true, "Bouncy Rocket Blockers", "splitGoldNut");
+			settings.Add("Rocket Ragdolls", true, "Rocket Ragdolls", "splitGoldNut");
+			settings.Add("Anchor Management", true, "Anchor Management", "splitGoldNut");
+			settings.Add("Rocky Smashing Squirrel", true, "Rocky Smashing Squirrel", "splitGoldNut");
+			settings.Add("Jelly Jumping", true, "Jelly Jumping", "splitGoldNut");
+			settings.Add("Patch O' Jack-O'-Lanterns", true, "Patch O' Jack-O'-Lanterns", "splitGoldNut");
+			settings.Add("Spooky Roof", true, "Spooky Roof", "splitGoldNut");
+			settings.Add("Door To The Spooky House", true, "Door To The Spooky House", "splitGoldNut");
+			settings.Add("Light My Fire", true, "Light My Fire", "splitGoldNut");
+			settings.Add("Resident Squirrel", true, "Resident Squirrel", "splitGoldNut");
+			settings.Add("Bonking The Big Bottom Button ", true, "Bonking The Big Bottom Button ", "splitGoldNut");
+			settings.Add("Hitting The Huge Higher Button", true, "Hitting The Huge Higher Button", "splitGoldNut");
 		settings.Add("splitWedge", false, "Split on Ammo Wedge", "splits");
 		settings.SetToolTip("splitWedge", "Split every time a reload upgrade wedge is collected");
 		settings.Add("splitOutfit", false, "Split on Outfit", "splits");
@@ -51,8 +107,8 @@ startup {
 	vars.bunkerSplit = false;
 	vars.toughSplit = false;
 	vars.towerSplit = false;
+	vars.completedNutSplits = new List<string>();
 	vars.finalSplitTriggered = false;
-	vars.goldNutCount = 0;
 	vars.maxAmmoCount = 0.0;
 	vars.accessoryCollected = new List<byte>();
 	vars.furCollected = new List<byte>();
@@ -81,8 +137,8 @@ onStart {
 	vars.bunkerSplit = false;
 	vars.toughSplit = false;
 	vars.towerSplit = false;
+	vars.completedNutSplits = new List<string>();
 	vars.finalSplitTriggered = false;
-	vars.goldNutCount = current.goldNuts;
 	vars.maxAmmoCount = current.maxAmmo;
 	vars.accessoryCollected = new List<byte>(){0, current.accessory};
 	vars.furCollected = new List<byte>(){0, current.fur};
@@ -129,16 +185,14 @@ split {
 		print("Split for ammo wedge. current count: " + (current.maxAmmo / 25).ToString());
 		return true;
 	}
+	
 	//Split when collecting a golden nut
-	else if(settings["splitGoldNuts"] &&
-			current.goldNuts > vars.goldNutCount &&
-			current.goldNuts < 100 && //current max possible is ~56?
-			current.notLoading)
-	{
-		vars.goldNutCount = current.goldNuts;
-		print("Split for golden nut. current count: " + current.goldNuts.ToString());
+	else if(!String.IsNullOrEmpty(current.nutName) && settings.ContainsKey(current.nutName) && settings["" + current.nutName] && !vars.completedNutSplits.Contains(current.nutName)){
+		vars.completedNutSplits.Add(current.nutName);
+		print("Split for golden nut: " + current.nutName);
 		return true;
 	}
+	
 	//Split when wearing a new accessory (hat)
 	else if(settings["splitAccessory"] &&
 			!vars.accessoryCollected.Contains(current.accessory) &&
