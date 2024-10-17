@@ -1,22 +1,44 @@
 //Written by SabulineHorizon
 
-state("SquirrelGun-Win64-Shipping", "[version]") {
-	double bossMaxHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x8;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, MaxHealth
-	double bossHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
-	byte cutsceneActive: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA22;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CinematicActive
-	bool notLoading: 0x762A9D8;							//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
-	double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
-	double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
-	double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
-	double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
-	double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
-	string200 mapFile: 0x76567B0, 0xAF8, 0x0;					//GEngine, FString TransitionDescription
-	double maxAmmo: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x640, 0xC8, 0x88;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, AC_HealthAndStats, StatsPlus, MaxAmmo
-	byte accessory: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2A;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Accessory
-	byte fur: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2B;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Fur
-	byte clothing: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2C;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Clothing
-	string200 nutName: 0x76567B0, 0x190, 0xE90, 0x1A8, 0x78, 0x508, 0x0;		//GEngine, WorldSettingsClass, ??, ??, ??, Fstring ??
+//Current version as of Oct 16 2024
+state("SquirrelGun-Win64-Shipping", "1.2.0.11") {
+	// string30 projectVersion: 0x765B470, 0x1B8, 0x2B0, 0x30, 0x0;			//GWorld, OwningGameInstance, ProjectVersionData, FString Version
+	double bossMaxHealth: 0x765B470, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x8;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, MaxHealth
+	double bossHealth: 0x765B470, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
+	byte cutsceneActive: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0xA22;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CinematicActive
+	bool notLoading: 0x762BB58;							//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
+	double playerX: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
+	double playerY: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
+	double playerZ: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
+	double checkpointX: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
+	double checkpointY: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
+	string200 mapFile: 0x7657930, 0xAF8, 0x0;					//GEngine, FString TransitionDescription
+	double maxAmmo: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x640, 0xC8, 0x88;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, AC_HealthAndStats, StatsPlus, MaxAmmo
+	byte accessory: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2A;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Accessory
+	byte fur: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2B;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Fur
+	byte clothing: 0x765B470, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2C;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Clothing
+	string200 nutName: 0x7657930, 0x190, 0xE90, 0x1A8, 0x78, 0x508, 0x0;		//GEngine, WorldSettingsClass, ??, ??, ??, Fstring ??
 }
+
+// //Todo: Add code to detect version and add this back in
+// //Older version 1.0.2.25
+// state("SquirrelGun-Win64-Shipping", "1.0.2.25") {
+	// double bossMaxHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x8;	//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, MaxHealth
+	// double bossHealth: 0x765A2F0, 0x30, 0x98, 0x4A0, 0x340, 0xC8, 0x10;		//GWorld, PersistentLevel, ???, BP_BlackHawk_C_1?, AC_HealthAndStats_C, StatsPlus, Health
+	// byte cutsceneActive: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xA22;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CinematicActive
+	// bool notLoading: 0x762A9D8;							//0 loading, 1 not - brief false positives during gameplay, this address probably needs to be replaced
+	// double playerX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x128;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+0
+	// double playerY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x130;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+8
+	// double playerZ: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x328, 0x138;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, CapsuleComponent, RelativeLocation+16
+	// double checkpointX: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC0;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+20
+	// double checkpointY: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0xAC8;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, CurrentCheckPointXF+28
+	// string200 mapFile: 0x76567B0, 0xAF8, 0x0;					//GEngine, FString TransitionDescription
+	// double maxAmmo: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x640, 0xC8, 0x88;	//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, AC_HealthAndStats, StatsPlus, MaxAmmo
+	// byte accessory: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2A;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Accessory
+	// byte fur: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2B;			//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Fur
+	// byte clothing: 0x765A2F0, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0xE2C;		//GWorld, OwningGameInstance, LocalPlayers, index[0], PlayerController, Character, Clothing
+	// string200 nutName: 0x76567B0, 0x190, 0xE90, 0x1A8, 0x78, 0x508, 0x0;		//GEngine, WorldSettingsClass, ??, ??, ??, Fstring ??
+// }
 
 startup {
 	settings.Add("splits", false, "Optional Splits");
