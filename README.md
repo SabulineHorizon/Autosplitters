@@ -1,5 +1,5 @@
 # Autosplitters
-The .asl files listed here are autosplitters that were created to be used with [Livesplit](https://livesplit.org/) and were mostly written by [SabulineHorizon](https://github.com/SabulineHorizon). The Doom asl was written with help from many contributors over the years, see comments in the asl code for more details.<br>
+The .asl files listed here are autosplitters that were created to be used with [Livesplit](https://livesplit.org/) and were mostly written by [SabulineHorizon](https://github.com/SabulineHorizon). The Doom asl was written with help from many contributors over the years, see comments in the asl code for more details. Some of the autosplitters need updating from time to time. Let me know if anything in this list is outdated or broken and I will try to take a look at it when I get time.<br>
 
 - *Gazillionaire.asl* was written for the Steam edition of the game [Gazillionaire](https://store.steampowered.com/app/1169100/Gazillionaire/).<br>
 - *WrathAeonOfRuin.asl* was written for the Steam edition of the game [Wrath: Aeon of Ruin](https://store.steampowered.com/app/1000410/WRATH_Aeon_of_Ruin/), January 12 2021 version.<br>
