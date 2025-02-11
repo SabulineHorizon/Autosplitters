@@ -9,3 +9,4 @@ The .asl files listed here are autosplitters that were created to be used with [
 - *PsychoCrab.asl* was written for the Steam edition of the game [Psycho Crab](https://store.steampowered.com/app/1923650/Psycho_Crab/).<br>
 - *Doom2016.asl* was written for the Steam edition of the 2016 game [Doom](https://store.steampowered.com/app/379720/DOOM/). Previous versions of this asl can be found [here](https://github.com/drtchops/asl/blob/master/doom2016.asl)<br>
 - *SquirrelWithAGun.asl* was written for the Steam edition of the game [Squirrel with a Gun](https://store.steampowered.com/app/2067050/Squirrel_with_a_Gun/).<br>
+- *AGameAboutDiggingAHole.asl* was written for the Steam edition of the game [A Game About Digging A Hole](https://store.steampowered.com/app/3244220/A_Game_About_Digging_A_Hole/).<br>
