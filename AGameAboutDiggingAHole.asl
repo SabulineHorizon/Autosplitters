@@ -70,6 +70,8 @@ startup
 			settings.Add("-100", false, "100 Meters", "depth");
 		settings.Add("finalSplit", true, "Final Split", "splits");
 		settings.SetToolTip("finalSplit", "Split when opening the chest to trigger final cutscene");
+			settings.Add("spamFinalSplit", true, "Spam Final Split", "finalSplit");
+			settings.SetToolTip("spamFinalSplit", "Repeatedly trigger final split to just in case there are too many splits");
 }
 
 init
@@ -127,23 +129,40 @@ split
 	string settingID = "";
 	
 	//Check if equipment was upgraded and if that upgrade is selected in the settings
-	if(current.shovel > old.shovel && settings[settingID = "shovel" + current.shovel.ToString()]) if(vars.splits.Add(settingID)) {vars.splitsQueue++; print(settingID);}
-	if(current.inventory > old.inventory && settings[settingID = "inventory" + current.inventory.ToString()]) if(vars.splits.Add(settingID)) {vars.splitsQueue++; print(settingID);}
-	if(current.battery > old.battery && settings[settingID = "battery" + current.battery.ToString()]) if(vars.splits.Add(settingID)) {vars.splitsQueue++; print(settingID);}
-	if(current.jetpack > old.jetpack && settings[settingID = "jetpack" + current.jetpack.ToString()]) if(vars.splits.Add(settingID)) {vars.splitsQueue++; print(settingID);}
+	if(current.shovel > old.shovel && settings[settingID = "shovel" + current.shovel.ToString()] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
+	if(current.inventory > old.inventory && settings[settingID = "inventory" + current.inventory.ToString()] && vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
+	if(current.battery > old.battery && settings[settingID = "battery" + current.battery.ToString()] && vars.splits.Add(settingID)) 	{vars.splitsQueue++; print(settingID);}
+	if(current.jetpack > old.jetpack && settings[settingID = "jetpack" + current.jetpack.ToString()] && vars.splits.Add(settingID)) 	{vars.splitsQueue++; print(settingID);}
 	
 	//Check if a new ore was collected and if that ore is selected in the settings
-	if(current.lastOreIndex != old.lastOreIndex && settings[settingID = "ores" + current.lastOreIndex.ToString()])	if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
+	if(current.lastOreIndex != old.lastOreIndex && settings[settingID = "ores" + current.lastOreIndex.ToString()] && vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
 	
 	//Check if each achievement's requirements are met and if it is selected in the settings
-	if(current.longFall >= 4.0 && settings[settingID = "longFall"])		if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
-	if(current.wasted >= 50 && settings[settingID = "wasted"])		if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
-	if(current.shoveled >= 4000 && settings[settingID = "shoveled"])	if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
-	if(current.boom >= 100 && settings[settingID = "boom"])			if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
-	if(current.moneymaker >= 20000 && settings[settingID = "moneymaker"])	if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
-	if(current.time >= 1800 && settings[settingID = "time"])		if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
-	if(current.stonemason >= 100 && settings[settingID = "stonemason"])	if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
-	if(current.specialOre >= 5 && settings[settingID = "specialOre"])	if(vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
+	if(current.longFall >= 4.0 && settings[settingID = "longFall"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
+	if(current.wasted >= 50 && settings[settingID = "wasted"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
+	if(current.shoveled >= 4000 && settings[settingID = "shoveled"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
+	if(current.boom >= 100 && settings[settingID = "boom"] && vars.splits.Add(settingID))			{vars.splitsQueue++; print(settingID);}
+	if(current.moneymaker >= 20000 && settings[settingID = "moneymaker"] && vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
+	if(current.time <= 1800 && settings[settingID = "time"] && vars.splits.Add(settingID))			{vars.splitsQueue++; print(settingID);}
+	if(current.stonemason >= 100 && settings[settingID = "stonemason"] && vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
+	if(current.specialOre >= 5 && settings[settingID = "specialOre"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
+	
+	//Calculate current depth from playerZ. It would be better to just use a pointer to the depth address, but this is easier for now
+	float highZ = 33.7f;	//playerZ at 0 meters
+	float lowZ = -6769.17f;	//playerZ at 100 meters
+	float depth = (int)Math.Floor((100 / (highZ - lowZ)) * ((float)current.playerZ - highZ));
+	
+	//Check if player is low enough to trigger any selected depth splits
+	if(
+		(depth <= -10 && settings[settingID = "-10"] && vars.splits.Add("-10")) ||
+		(depth <= -25 && settings[settingID = "-25"] && vars.splits.Add("-25")) ||
+		(depth <= -50 && settings[settingID = "-50"] && vars.splits.Add("-50")) ||
+		(depth <= -75 && settings[settingID = "-75"] && vars.splits.Add("-75")) ||
+		(depth <= -100 && settings[settingID = "-100"] && vars.splits.Add("-100"))
+	)
+	{
+		vars.splitsQueue++; print(settingID);
+	}
 	
 	//Final split if player is within 200 units of chest and has locked movement (unfortunately triggers a false positive when pausing in the area)
 	if(settings["finalSplit"] &&
@@ -153,7 +172,10 @@ split
 		(Math.Abs(current.playerY - (5640.0)) < 500.0) &&
 		(Math.Abs(current.playerZ - (-7570.0)) < 500.0))
 	{
+		print("finalSplit");
 		vars.splitsQueue++;
+		if(settings["spamFinalSplit"])
+			vars.splitsQueue += 100;
 	}
 	
 	//Trigger one queued split this update cycle if there are any
