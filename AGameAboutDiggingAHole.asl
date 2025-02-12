@@ -61,7 +61,7 @@ startup
 			settings.Add("time", false, "Time", "achievements");			settings.SetToolTip("time", "Beat game under 30m");
 			settings.Add("stonemason", false, "Stonemason", "achievements");	settings.SetToolTip("stonemason", "Collect 100 stones");
 			settings.Add("specialOre", false, "Special Ore", "achievements");	settings.SetToolTip("specialOre", "Collect 5 rainbow ores");
-		settings.Add("depth", false, "Depth (not implemented yet)", "splits");
+		settings.Add("depth", false, "Depth", "splits");
 		settings.SetToolTip("depth", "Split the first time each selected depth is reached");
 			settings.Add("-10", false, "10 Meters", "depth");
 			settings.Add("-25", false, "25 Meters", "depth");
