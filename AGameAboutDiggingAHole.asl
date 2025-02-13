@@ -90,6 +90,7 @@ init
 	//These pointer paths were traced manually since none of the Unreal dumpers would work for me on this game
 	vars.Helper["map"] = vars.Helper.MakeString(gEngine, 0xAF8, 0x0);
 	vars.Helper["moveLocked"] = vars.Helper.Make<int>(gWorld, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x8C4);
+	vars.Helper["moving"] = vars.Helper.Make<int>(gWorld, 0x2B0, 0x20, 0x20, 0x698, 0x4F0, 0x28, 0x8);	//1 no, 5 yes (sometimes 6 yes?)
 	vars.Helper["inventory"] = vars.Helper.Make<int>(gWorld, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x8E4);
 	vars.Helper["shovel"] = vars.Helper.Make<int>(gWorld, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x8E8);
 	vars.Helper["jetpack"] = vars.Helper.Make<int>(gWorld, 0x1B8, 0x38, 0x0, 0x30, 0x2E0, 0x8F0);
@@ -116,7 +117,8 @@ update
 
 start
 {
-	return(current.moveLocked == 0 && old.moveLocked == 256 && current.map == "/Game/Maps/MainLevel");
+	// return(current.moveLocked == 0 && old.moveLocked == 256 && current.map == "/Game/Maps/MainLevel");
+	return(current.moveLocked == 0 && current.moving > 1 && current.map == "/Game/Maps/MainLevel");
 }
 
 onStart
@@ -175,7 +177,7 @@ split
 		print("finalSplit");
 		vars.splitsQueue++;
 		if(settings["spamFinalSplit"])
-			vars.splitsQueue += 100;
+			vars.splitsQueue += 20;
 	}
 	
 	//Trigger one queued split this update cycle if there are any
@@ -191,4 +193,9 @@ split
 reset
 {
 	return(current.map == "/Game/Maps/MainMenu" && old.map != "/Game/Maps/MainMenu");
+}
+
+onReset
+{
+	vars.splitsQueue = 0;
 }
