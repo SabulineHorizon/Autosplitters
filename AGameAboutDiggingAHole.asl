@@ -140,7 +140,7 @@ split
 	if(current.lastOreIndex != old.lastOreIndex && settings[settingID = "ores" + current.lastOreIndex.ToString()] && vars.splits.Add(settingID))	{vars.splitsQueue++; print(settingID);}
 	
 	//Check if each achievement's requirements are met and if it is selected in the settings
-	if(current.longFall >= 4.0 && settings[settingID = "longFall"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
+	if(current.longFall >= 3.95 && settings[settingID = "longFall"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
 	if(current.wasted >= 50 && settings[settingID = "wasted"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
 	if(current.shoveled >= 4000 && settings[settingID = "shoveled"] && vars.splits.Add(settingID))		{vars.splitsQueue++; print(settingID);}
 	if(current.boom >= 100 && settings[settingID = "boom"] && vars.splits.Add(settingID))			{vars.splitsQueue++; print(settingID);}
