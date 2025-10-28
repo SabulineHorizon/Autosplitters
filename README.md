@@ -11,3 +11,4 @@ The .asl files listed here are autosplitters that were created to be used with [
 - *SquirrelWithAGun.asl* was written for the Steam edition of the game [Squirrel with a Gun](https://store.steampowered.com/app/2067050/Squirrel_with_a_Gun/).<br>
 - *AGameAboutDiggingAHole.asl* was written for the Steam edition of the game [A Game About Digging A Hole](https://store.steampowered.com/app/3244220/A_Game_About_Digging_A_Hole/).<br>
 - *DOGWALK.asl* was written for v1.0.2 of the Steam edition of the game [DOGWALK](https://store.steampowered.com/app/3775050/DOGWALK/).<br>
+- *RVThereYet.asl* was written for the Steam edition of the game [RV There Yet](https://store.steampowered.com/app/3949040/RV_There_Yet/).<br>
