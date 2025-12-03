@@ -50,9 +50,8 @@ init
 	
 	vars.Helper["bIsActive"] = vars.Helper.Make<bool>(gWorld, 0x228, 0x38, 0x0, 0x30, 0x788, 0x3E0); // 0 inactive, 1 active (activates before loading screen at start too)
 	vars.Helper["seconds"] = vars.Helper.Make<double>(gWorld, 0x1b0, 0x2d8); // ReplicatedWorldTimeSecondsDouble
-	// vars.Helper["checkpoint"] = vars.Helper.Make<int>(gWorld, 0x228, 0x1F0); // Current checkpoint index 0-17 // This pointer broke on the game update that added customizable inputs
-	vars.Helper["checkpoint"] = vars.Helper.Make<int>(gWorld, 0x228, 0x1F8); // Current checkpoint index 0-17
-	vars.Helper["credits"] = vars.Helper.Make<long>(gWorld, 0x228, 0x38, 0x0, 0x30, 0x788, 0x690); // Pointer to the credits music component
+	vars.Helper["checkpoint"] = vars.Helper.Make<int>(gWorld, 0x228, 0x250); // Current checkpoint index 0-17 (last offset in previous builds was 0x1f0 and 0x1f8)
+	vars.Helper["credits"] = vars.Helper.Make<long>(gWorld, 0x228, 0x38, 0x0, 0x30, 0x788, 0x680); // Pointer to the credits music component (last offset in previous builds was 0x690)
 	vars.Helper["mapPath"] = vars.Helper.MakeString(gEngine, 0x0D48, 0x0); // TransitionDescription
 }
 
@@ -86,6 +85,7 @@ split {
 	if(
 		current.checkpoint == 17 &&
 		current.credits != null && current.credits != 0 &&
+		current.mapPath == "/Game/Ride/Maps/RideMap" &&
 		settings[settingID = "finalSplit"] &&
 		(settings["spamFinalSplit"] || vars.splits.Add(settingID))
 	)
