@@ -1,4 +1,4 @@
-//RV There Yet autosplitter
+// RV There Yet autosplitter
 // Auto start, reset, and split. Written by SabulineHorizon
 // Using asl-help component https://github.com/just-ero/asl-help/raw/main/lib/asl-help
 
@@ -9,31 +9,29 @@ startup {
 	vars.splits = new HashSet<string>();
 	vars.splitsQueue = 0;
 	
-	settings.Add("splits", true, "Splits");
-	settings.SetToolTip("splits", "Enable or disable specific splits");
-		settings.Add("checkpoints", false, "Checkpoints", "splits");
-		settings.SetToolTip("checkpoints", "Split when each selected checkpoint is first reached");
-			settings.Add("1", true, "Checkpoint 1", "checkpoints");
-			settings.Add("2", true, "Checkpoint 2", "checkpoints");
-			settings.Add("3", true, "Checkpoint 3", "checkpoints");
-			settings.Add("4", true, "Checkpoint 4", "checkpoints");
-			settings.Add("5", true, "Checkpoint 5", "checkpoints");
-			settings.Add("6", true, "Checkpoint 6", "checkpoints");
-			settings.Add("7", true, "Checkpoint 7", "checkpoints");
-			settings.Add("8", true, "Checkpoint 8", "checkpoints");
-			settings.Add("9", true, "Checkpoint 9", "checkpoints");
-			settings.Add("10", true, "Checkpoint 10", "checkpoints");
-			settings.Add("11", true, "Checkpoint 11", "checkpoints");
-			settings.Add("12", true, "Checkpoint 12", "checkpoints");
-			settings.Add("13", true, "Checkpoint 13", "checkpoints");
-			settings.Add("14", true, "Checkpoint 14", "checkpoints");
-			settings.Add("15", true, "Checkpoint 15", "checkpoints");
-			settings.Add("16", true, "Checkpoint 16", "checkpoints");
-			settings.Add("17", true, "Checkpoint 17", "checkpoints");
-		settings.Add("finalSplit", true, "Final Split", "splits");
-		settings.SetToolTip("finalSplit", "Split when triggering the end credits");
-			settings.Add("spamFinalSplit", true, "Spam Final Split", "finalSplit");
-			settings.SetToolTip("spamFinalSplit", "Repeatedly trigger final split to just in case there are too many splits");
+	settings.Add("checkpoints", false, "Checkpoints");
+	settings.SetToolTip("checkpoints", "Split when each selected checkpoint is first reached");
+		settings.Add("1", true, "Checkpoint 1", "checkpoints");
+		settings.Add("2", true, "Checkpoint 2", "checkpoints");
+		settings.Add("3", true, "Checkpoint 3", "checkpoints");
+		settings.Add("4", true, "Checkpoint 4", "checkpoints");
+		settings.Add("5", true, "Checkpoint 5", "checkpoints");
+		settings.Add("6", true, "Checkpoint 6", "checkpoints");
+		settings.Add("7", true, "Checkpoint 7", "checkpoints");
+		settings.Add("8", true, "Checkpoint 8", "checkpoints");
+		settings.Add("9", true, "Checkpoint 9", "checkpoints");
+		settings.Add("10", true, "Checkpoint 10", "checkpoints");
+		settings.Add("11", true, "Checkpoint 11", "checkpoints");
+		settings.Add("12", true, "Checkpoint 12", "checkpoints");
+		settings.Add("13", true, "Checkpoint 13", "checkpoints");
+		settings.Add("14", true, "Checkpoint 14", "checkpoints");
+		settings.Add("15", true, "Checkpoint 15", "checkpoints");
+		settings.Add("16", true, "Checkpoint 16", "checkpoints");
+		settings.Add("17", true, "Checkpoint 17", "checkpoints");
+	settings.Add("finalSplit", true, "Final Split");
+	settings.SetToolTip("finalSplit", "Split when triggering the end credits");
+		settings.Add("spamFinalSplit", true, "Spam Final Split", "finalSplit");
+		settings.SetToolTip("spamFinalSplit", "Repeatedly trigger final split to just in case there are too many splits");
 }
 
 init
@@ -48,18 +46,18 @@ init
 		return;
 	}
 	
-	vars.Helper["bIsActive"] = vars.Helper.Make<bool>(gWorld, 0x228, 0x38, 0x0, 0x30, 0x788, 0x3E0); // 0 inactive, 1 active (activates before loading screen at start too)
-	vars.Helper["seconds"] = vars.Helper.Make<double>(gWorld, 0x1b0, 0x2d8); // ReplicatedWorldTimeSecondsDouble
-	vars.Helper["checkpoint"] = vars.Helper.Make<int>(gWorld, 0x228, 0x250); // Current checkpoint index 0-17 (last offset in previous builds was 0x1f0 and 0x1f8)
-	vars.Helper["credits"] = vars.Helper.Make<long>(gWorld, 0x228, 0x38, 0x0, 0x30, 0x788, 0x680); // Pointer to the credits music component (last offset in previous builds was 0x690)
-	vars.Helper["mapPath"] = vars.Helper.MakeString(gEngine, 0x0D48, 0x0); // TransitionDescription
+	vars.Helper["bIsActive"] = vars.Helper.Make<bool>(gWorld, 0x228, 0x38, 0x0, 0x30, 0x788, 0x3E0); // UWG_PlayerHUD_C, bIsActive // 0 inactive, 1 active (activates before loading screen at start too)
+	vars.Helper["seconds"] = vars.Helper.Make<double>(gWorld, 0x1b0, 0x2d8); // Engine, ReplicatedWorldTimeSecondsDouble
+	vars.Helper["checkpoint"] = vars.Helper.Make<int>(gWorld, 0x228, 0x280); // URideGameInstance_C, CurrentCheckpointIndex // Current checkpoint index 0-17
+	vars.Helper["credits"] = vars.Helper.Make<long>(gWorld, 0x228, 0x38, 0x0, 0x30, 0x788, 0x680); // WG_PlayerHUD, CreditsMusic - Pointer to the credits music component
+	vars.Helper["mapPath"] = vars.Helper.MakeString(gEngine, 0x0D48, 0x0); // Engine, TransitionDescription
 }
 
 update
 {
 	vars.Helper.Update();
 	vars.Helper.MapPointers();
-	// print(current.credits.ToString());
+	//print(current.credits.ToString());
 }
 
 start {
@@ -73,7 +71,7 @@ onStart {
 split {
 	string settingID = "";
 	
-	//Check if a new checkpoint has been reached
+	// Check if a new checkpoint has been reached
 	if(
 		current.checkpoint != null && current.checkpoint != 0 &&
 		settings[settingID = current.checkpoint.ToString()] &&
@@ -81,17 +79,17 @@ split {
 	)
 	{vars.splitsQueue++; print(settingID);}
 	
-	//Final split
+	// Final split
 	if(
-		current.checkpoint == 17 &&
+		((current.checkpoint == 17 && current.mapPath == "/Game/Ride/Maps/RideMap") ||		//Mabutts Valley
+		(current.checkpoint == 14 && current.mapPath == "/Game/Ride/Maps/SnowLevel")) &&	//Yurbuttsk Mountain
 		current.credits != null && current.credits != 0 &&
-		current.mapPath == "/Game/Ride/Maps/RideMap" &&
 		settings[settingID = "finalSplit"] &&
 		(settings["spamFinalSplit"] || vars.splits.Add(settingID))
 	)
 	{vars.splitsQueue++; print(settingID);}
 	
-	//Trigger one queued split this update cycle if there are any
+	// Trigger one queued split this update cycle if there are any
 	if(vars.splitsQueue > 0)
 	{
 		vars.splitsQueue--;
@@ -102,7 +100,11 @@ split {
 }
 
 reset {
-	return(current.mapPath == "/Game/Ride/Maps/Frontend" && old.mapPath == "/Game/Ride/Maps/RideMap");
+	// Reset if map changed from a game map scene to a title menu scene
+	return(
+		(current.mapPath == "/Game/Ride/Maps/Frontend" || current.mapPath == "/Game/Ride/Maps/Frontend_Snow") &&
+		(old.mapPath == "/Game/Ride/Maps/RideMap" || old.mapPath == "/Game/Ride/Maps/SnowLevel")
+	);
 }
 
 onReset
